@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="sr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Time Tracker — Izveštaji</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-slate-100 text-slate-800 min-h-screen">
+    <div class="max-w-4xl mx-auto px-4 py-8 space-y-6">
+        <!-- Zaglavlje i navigacija -->
+        <header
+            class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+                <h1 class="text-2xl font-bold text-slate-900">Izveštaji utrošenog vremena</h1>
+                <p id="report-range-label" class="text-sm text-slate-500">
+                    Pregled zabeleženih sesija
+                </p>
+            </div>
+
+            <nav class="flex items-center gap-2">
+                <a href="index.html"
+                    class="px-4 py-2 rounded-xl text-sm font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors">
+                    Zadaci
+                </a>
+                <a href="reports.html" class="px-4 py-2 rounded-xl text-sm font-semibold bg-teal-600 text-white">
+                    Izveštaji
+                </a>
+            </nav>
+        </header>
+
+        <!-- Izbor perioda (Dnevni / Nedeljni / Mesečni) -->
+        <section
+            class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm flex flex-wrap items-center justify-between gap-3">
+            <span class="text-sm font-semibold text-slate-700">Izaberi period:</span>
+
+            <div id="period-buttons" class="flex flex-wrap items-center gap-2">
+                <button type="button" data-period="daily"
+                    class="period-btn px-4 py-2 rounded-xl text-sm font-semibold bg-teal-600 text-white transition-colors cursor-pointer">
+                    Dnevni
+                </button>
+                <button type="button" data-period="weekly"
+                    class="period-btn px-4 py-2 rounded-xl text-sm font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors cursor-pointer">
+                    Nedeljni
+                </button>
+                <button type="button" data-period="monthly"
+                    class="period-btn px-4 py-2 rounded-xl text-sm font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors cursor-pointer">
+                    Mesečni
+                </button>
+            </div>
+        </section>
+
+        <!-- Zbirne kartice za izabrani period -->
+        <section class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm">
+                <p class="text-xs uppercase tracking-wider text-slate-400 font-semibold">
+                    Ukupno vreme u periodu
+                </p>
+                <p id="report-total-time" class="text-2xl font-mono font-bold text-teal-600 mt-1">
+                    00:00:00
+                </p>
+            </div>
+
+            <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm">
+                <p class="text-xs uppercase tracking-wider text-slate-400 font-semibold">
+                    Broj sesija
+                </p>
+                <p id="report-sessions-count" class="text-2xl font-bold text-slate-900 mt-1">
+                    0
+                </p>
+            </div>
+
+            <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm">
+                <p class="text-xs uppercase tracking-wider text-slate-400 font-semibold">
+                    Aktivni zadaci u periodu
+                </p>
+                <p id="report-tasks-count" class="text-2xl font-bold text-slate-900 mt-1">
+                    0
+                </p>
+            </div>
+        </section>
+
+        <!-- Raspodela vremena po zadacima / projektima -->
+        <section class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-4">
+            <div class="flex items-center justify-between">
+                <h2 class="text-lg font-bold text-slate-900">Po zadacima</h2>
+                <span class="text-xs text-slate-400">Zbir po zadatku za izabrani period</span>
+            </div>
+
+            <div id="report-by-task" class="space-y-3">
+                <!-- Popunjava js/reports.js -->
+            </div>
+        </section>
+
+        <!-- Detaljna lista završenih sesija -->
+        <section class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-4">
+            <div class="flex items-center justify-between">
+                <h2 class="text-lg font-bold text-slate-900">Detaljne sesije</h2>
+                <span class="text-xs text-slate-400">Hronološki zapisi iz localStorage-a</span>
+            </div>
+
+            <div id="report-entries-list" class="space-y-2">
+                <!-- Popunjava js/reports.js -->
+            </div>
+        </section>
+    </div>
+
+    <script type="module" src="js/reports.js"></script>
+</body>
+
+</html>
