@@ -17,7 +17,7 @@ export function addTask(title){
     if(!cleanTitle) return getTasks()
 
     const newTask = {
-        id: crypto.randomUUID ? crypto.randomUUID : String(Date.now()),
+        id: crypto.randomUUID() ? crypto.randomUUID() : String(Date.now()),
         title: cleanTitle,
         totalSeconds: 0,
         isRunning: false,
@@ -35,8 +35,8 @@ export function formatTime(seconds){
 
     const safe = Math.max(0, Math.floor(seconds))
     const h = String(Math.floor(safe / 3600)).padStart(2,"0")
-    const m = String(Math.floor((h % 3600) / 60)).padStart(2,"0")
-    const s = String(m % 60).padStart(2,"0")
+    const m = String(Math.floor((safe % 3600) / 60)).padStart(2,"0")
+    const s = String(safe % 60).padStart(2,"0")
 
     return `${h}:${m}:${s}`;
 }
@@ -53,9 +53,14 @@ export function getCurrentTaskSeconds(task, now = Date.now()){
 
 
 export function startTimer(taskId){
+    
+    console.log("eee");
+    
 
     const now = Date.now()
     const tasks = getTasks().map((task) => {
+
+        // Task na koji smo kliknuli start
         if(task.id === taskId){
             return {
                 ...task,
@@ -64,6 +69,7 @@ export function startTimer(taskId){
             }
         }
 
+        // Task koji je vec bio pokrenut
         if(task.isRunning && task.activeStartTime){
             const elapsed = Math.max(0, Math.floor((now - task.activeStartTime) / 1000))
             return {
@@ -103,6 +109,14 @@ export function stopTimer(taskId){
 
 
 
+
+export function deleteTask(taskId){
+
+    const tasks = getTasks().filter((task) => task.id !== taskId)
+    
+    saveTasks(tasks)
+    return tasks    
+}
 
 
 

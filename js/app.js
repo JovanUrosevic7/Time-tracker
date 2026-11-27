@@ -1,4 +1,4 @@
-import { addTask, formatTime, getCurrentTaskSeconds, getTasks, startTimer, stopTimer } from "./storage.js";
+import { addTask, deleteTask, formatTime, getCurrentTaskSeconds, getTasks, startTimer, stopTimer } from "./storage.js";
 
 
 const form = document.getElementById("task-form");
@@ -23,7 +23,7 @@ function render() {
 
     container.innerHTML = tasks.map((task) => {
 
-        const seconds = getCurrentTaskSeconds(now)
+        const seconds = getCurrentTaskSeconds(task, now)
 
         return `
 
@@ -31,38 +31,41 @@ function render() {
                 <div>
                     <h2 class="font-semibold text-slate-900">${task.title}</h2>
                     <p data-time-id="${task.id}" class="font-mono text-lg text-teal-600 font-bold">
-                    ${formatTime(seconds)}
+                        ${formatTime(seconds)}
                     </p>
                 </div>
 
-                ${task.isRunning
-                    ? `<button data-action="stop" data-id="${task.id}" class="px-4 py-2 rounded-lg bg-amber-500 hover:bg-amber-600 text-white text-sm font-semibold cursor-pointer">
-                    Stop
-                    </button>`
+                <div class="flex items-center gap-2">
+                    <button data-action="delete" data-id="${task.id}" class="px-3 py-2 rounded-lg bg-red-500 hover:bg-red-600 text-white text-sm font-semibold cursor-pointer">
+                        Delete
+                    </button>
 
+                    ${task.isRunning
+                    ? `<button data-action="stop" data-id="${task.id}" class="px-4 py-2 rounded-lg bg-amber-500 hover:bg-amber-600 text-white text-sm font-semibold cursor-pointer">
+                            Stop
+                        </button>`
                     : `<button data-action="start" data-id="${task.id}" class="px-4 py-2 rounded-lg bg-teal-600 hover:bg-teal-700 text-white text-sm font-semibold cursor-pointer">
-                    Start
-                    </button>`
+                            Start
+                        </button>`
                 }
+                </div>
             </div>
         
         `
 
     })
-    .join("")
+        .join("")
 
 }
 
 
 form.addEventListener("submit", (e) => {
-
     e.preventDefault()
 
     addTask(input.value)
     input.value = ""
     input.focus()
     render()
-
 })
 
 
@@ -72,7 +75,7 @@ setInterval(() => {
 
     tasks.forEach((task) => {
         const timeEl = container.querySelector(`[data-time-id="${task.id}"]`)
-        if(timeEl){
+        if (timeEl) {
             timeEl.textContent = formatTime(getCurrentTaskSeconds(task, now))
         }
     })
@@ -81,19 +84,32 @@ setInterval(() => {
 container.addEventListener("click", (e) => {
 
     const btn = e.target.closest("button[data-action]")
-    if(!btn) return
+    if (!btn) return
 
-    const {action, id} = btn.dataset
-    if(action === "start"){
+    const { action, id } = btn.dataset
+    if (action === "start") {
         startTimer(id)
-    } else if(action === "stop"){
+    } else if (action === "stop") {
         stopTimer(id)
+    } else if(action === "delete"){
+        deleteTask(id)
     }
+
+    
 
     render()
 })
 
+
+
+
+
+
+
+
+
 render()
+
 
 
 
